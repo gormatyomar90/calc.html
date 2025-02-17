@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modern Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+
+        @keyframes backgroundAnimation {
+            0% {
+                background: linear-gradient(135deg, #667eea, #764ba2);
+            }
+            100% {
+                background: linear-gradient(135deg, #764ba2, #667eea);
+            }
+        }
+
+        .calculator {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            max-width: 90%;
+        }
+
+        .calculator-screen {
+            width: 100%;
+            height: 60px;
+            background-color: #222;
+            color: #fff;
+            text-align: right;
+            padding: 10px;
+            font-size: 2rem;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .calculator-keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            height: 60px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 10px;
+            background-color: #555;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #777;
+        }
+
+        button:active {
+            background-color: #999;
+            transform: scale(0.98);
+        }
+
+        .operator {
+            background-color: #f39c12;
+        }
+
+        .operator:hover {
+            background-color: #f1c40f;
+        }
+
+        .equal {
+            background-color: #27ae60;
+        }
+
+        .equal:hover {
+            background-color: #2ecc71;
+        }
+
+        .clear {
+            background-color: #e74c3c;
+        }
+
+        .clear:hover {
+            background-color: #c0392b;
+        }
+
+        .erase {
+            background-color: #3498db;
+        }
+
+        .erase:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 400px) {
+            .calculator {
+                padding: 15px;
+            }
+
+            button {
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .calculator-screen {
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" class="calculator-screen" id="screen" disabled>
+        <div class="calculator-keys">
+            <button class="clear" onclick="clearScreen(); playClickSound()">C</button>
+            <button class="erase" onclick="eraseLast(); playClickSound()">⌫</button>
+            <button class="operator" onclick="appendValue('/'); playClickSound()">/</button>
+            <button class="operator" onclick="appendValue('*'); playClickSound()">*</button>
+            <button class="operator" onclick="appendValue('-'); playClickSound()">-</button>
+            <button class="operator" onclick="appendValue('+'); playClickSound()">+</button>
+            <button onclick="appendValue('7'); playClickSound()">7</button>
+            <button onclick="appendValue('8'); playClickSound()">8</button>
+            <button onclick="appendValue('9'); playClickSound()">9</button>
+            <button onclick="appendValue('4'); playClickSound()">4</button>
+            <button onclick="appendValue('5'); playClickSound()">5</button>
+            <button onclick="appendValue('6'); playClickSound()">6</button>
+            <button onclick="appendValue('1'); playClickSound()">1</button>
+            <button onclick="appendValue('2'); playClickSound()">2</button>
+            <button onclick="appendValue('3'); playClickSound()">3</button>
+            <button onclick="appendValue('0'); playClickSound()">0</button>
+            <button onclick="appendValue('.'); playClickSound()">.</button>
+            <button class="equal" onclick="calculateResult(); playClickSound()">=</button>
+        </div>
+    </div>
+
+    <audio id="click-sound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+
+    <script>
+        function appendValue(value) {
+            document.getElementById('screen').value += value;
+        }
+
+        function clearScreen() {
+            document.getElementById('screen').value = '';
+        }
+
+        function eraseLast() {
+            let screen = document.getElementById('screen');
+            screen.value = screen.value.slice(0, -1);
+        }
+
+        function calculateResult() {
+            try {
+                document.getElementById('screen').value = eval(document.getElementById('screen').value);
+            } catch (e) {
+                alert('Invalid Expression');
+            }
+        }
+
+        function playClickSound() {
+            const sound = document.getElementById('click-sound');
+            sound.currentTime = 0;
+            sound.play().catch(error => console.error('Audio play failed', error));
+        }
+    </script>
+</body>
+</html>
